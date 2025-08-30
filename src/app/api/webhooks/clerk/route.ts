@@ -4,20 +4,20 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const payload = await req.json();
-  const rawHeaders = headers();
+  const rawHeaders = headers(); // ✅ this is already ReadonlyHeaders, no Promise
 
-  // Convert Next.js headers to a plain object for svix
+  // Convert Next.js ReadonlyHeaders to plain object
   const headerPayload: Record<string, string> = {};
-  rawHeaders.forEach((value, key) => {
+  for (const [key, value] of rawHeaders.entries()) {
     headerPayload[key] = value;
-  });
+  }
 
   const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET || "");
   let evt;
   try {
     evt = wh.verify(JSON.stringify(payload), headerPayload);
   } catch (err) {
-    console.error("Webhook verification failed:", err);
+    console.error("❌ Webhook verification failed:", err);
     return new Response("Invalid signature", { status: 400 });
   }
 
