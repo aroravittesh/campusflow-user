@@ -4,13 +4,15 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const payload = await req.json();
-  const rawHeaders = headers(); // ✅ this is already ReadonlyHeaders, no Promise
 
-  // Convert Next.js ReadonlyHeaders to plain object
+  // ✅ Await headers() since it's a Promise in your environment
+  const rawHeaders = await headers();
+
+  // Convert ReadonlyHeaders → plain object
   const headerPayload: Record<string, string> = {};
-  for (const [key, value] of rawHeaders.entries()) {
+  rawHeaders.forEach((value, key) => {
     headerPayload[key] = value;
-  }
+  });
 
   const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET || "");
   let evt;
