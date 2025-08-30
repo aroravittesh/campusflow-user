@@ -4,7 +4,13 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   const payload = await req.json();
-  const headerPayload = headers();
+  const rawHeaders = headers();
+
+  // Convert Next.js headers to a plain object for svix
+  const headerPayload: Record<string, string> = {};
+  rawHeaders.forEach((value, key) => {
+    headerPayload[key] = value;
+  });
 
   const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET || "");
   let evt;
