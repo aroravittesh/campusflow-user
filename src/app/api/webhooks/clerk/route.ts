@@ -40,9 +40,9 @@ export async function POST(req: Request) {
           email: email_addresses?.[0]?.email_address,
         },
       });
-      alert("✅ User inserted into DB:", id);
+      console.log("✅ User inserted into DB:", id);
     } catch (e) {
-      alert("❌ Prisma insert failed:", e);
+      console.error("❌ Prisma insert failed:", e);
     }
   }
 
