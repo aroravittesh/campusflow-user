@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { SignOutButton } from "@clerk/nextjs";  // 👈 import this
 
 export default function Home() {
   return (
@@ -24,6 +25,13 @@ export default function Home() {
             Save and see your changes instantly.
           </li>
         </ol>
+
+        {/* 🚀 Clerk Sign Out Button */}
+        <SignOutButton>
+          <button className="rounded-md bg-red-500 text-white px-4 py-2 hover:bg-red-600 transition">
+            Sign out
+          </button>
+        </SignOutButton>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
